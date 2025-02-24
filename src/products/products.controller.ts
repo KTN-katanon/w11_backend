@@ -46,8 +46,8 @@ export class ProductsController {
     return this.productsService.create({
       ...createProductDto,
       imageUrl: file
-        ? '/products/images/' + file.filename
-        : '/products/images/unknown.jpg',
+        ? '/product-images/' + file.filename
+        : '/product-images/unknown.jpg',
     });
   }
 
