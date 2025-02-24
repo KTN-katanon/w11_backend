@@ -43,7 +43,12 @@ export class ProductsController {
     @Body() createProductDto: CreateProductDto,
   ) {
     console.log(file);
-    return this.productsService.create(createProductDto);
+    return this.productsService.create({
+      ...createProductDto,
+      imageUrl: file
+        ? '/products/images/' + file.filename
+        : '/products/images/unknown.jpg',
+    });
   }
 
   @Get()
