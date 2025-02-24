@@ -21,8 +21,12 @@ import { join } from 'path';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'upload'),
-      serveRoot: '/upload',
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads/products'),
+      serveRoot: '/products-images',
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
