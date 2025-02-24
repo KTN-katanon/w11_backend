@@ -25,7 +25,7 @@ export class Product {
   @Column()
   typeId: number;
 
-  @Column()
+  @Column({ default: '/product-images/unknown.jpg' })
   imageUrl: string;
 
   @CreateDateColumn()
