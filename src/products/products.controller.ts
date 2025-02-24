@@ -29,7 +29,7 @@ export class ProductsController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/products',
         filename: (req, file, callback) => {
           console.log(file);
           const uniqueFileName = uuidv4() + extname(file.originalname);
