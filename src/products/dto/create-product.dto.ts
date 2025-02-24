@@ -1,4 +1,4 @@
-import { IsString, IsNumber, Min } from 'class-validator';
+import { IsString, IsNumber, Min, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
@@ -15,4 +15,13 @@ export class CreateProductDto {
   @IsNumber()
   @Min(0)
   typeId: number;
+
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    description: 'รูปภาพสินค้า',
+    required: false,
+  })
+  @IsOptional()
+  file?: string;
 }

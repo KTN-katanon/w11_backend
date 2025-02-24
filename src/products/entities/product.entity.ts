@@ -25,6 +25,9 @@ export class Product {
   @Column()
   typeId: number;
 
+  @Column()
+  imageUrl: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
