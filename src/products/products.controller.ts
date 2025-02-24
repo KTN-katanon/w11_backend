@@ -62,8 +62,36 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+  @ApiOperation({ summary: 'อัปเดตข้อมูลสินค้า' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'ข้อมูลที่ต้องการอัปเดตสินค้า',
+    type: UpdateProductDto,
+  })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/products', // กำหนดที่เก็บไฟล์
+        filename: (req, file, callback) => {
+          const uniqueFileName = uuidv4() + extname(file.originalname);
+          callback(null, uniqueFileName);
+        },
+      }),
+    }),
+  )
+  async update(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    const existingProduct = await this.productsService.findOne(+id);
+    const imageUrl = file
+      ? '/products-images/' + file.filename
+      : existingProduct.imageUrl;
+    return this.productsService.update(+id, {
+      ...updateProductDto,
+      imageUrl,
+    });
   }
 
   @Delete(':id')
