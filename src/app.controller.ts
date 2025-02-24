@@ -78,6 +78,7 @@ export class AppController {
   )
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Body() body: UploadFileDto,
   ) {
     console.log(file.filename);
