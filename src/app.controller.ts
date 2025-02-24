@@ -12,6 +12,12 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiConsumes, ApiProperty } from '@nestjs/swagger';
+
+class UploadFileDto {
+  @ApiProperty({ type: 'string', format: 'binary' })
+  file?: string;
+}
 
 @Controller()
 export class AppController {
@@ -54,8 +60,12 @@ export class AppController {
   }
 
   @Post('upload')
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: UploadFileDto,
+  ) {
     console.log(file);
   }
 }
