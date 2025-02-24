@@ -15,9 +15,15 @@ import { Role } from './roles/entities/role.entity';
 import { OrdersModule } from './orders/orders.module';
 import { Order } from './orders/entities/order.entity';
 import { OrderItem } from './orders/entities/orderItem.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'upload'),
+      serveRoot: '/upload',
+    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'mydb.sqlite',
