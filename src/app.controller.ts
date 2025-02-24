@@ -13,6 +13,9 @@ import {
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiProperty } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 class UploadFileDto {
   @ApiProperty({ type: 'string', format: 'binary' })
@@ -61,11 +64,22 @@ export class AppController {
 
   @Post('upload')
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, callback) => {
+          console.log(file);
+          const uniqueFileName = uuidv4() + extname(file.originalname);
+          callback(null, uniqueFileName);
+        },
+      }),
+    }),
+  )
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: UploadFileDto,
   ) {
-    console.log(file);
+    console.log(file.filename);
   }
 }
