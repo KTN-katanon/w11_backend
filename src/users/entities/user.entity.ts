@@ -21,6 +21,9 @@ export class User {
   password: string;
   // roles: ('admin' | 'user')[];
 
+  @Column({ default: '/products-images/unknown.jpg' })
+  imageUrl: string;
+
   @Column()
   gender: 'male' | 'female';
   age: number;
