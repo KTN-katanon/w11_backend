@@ -61,7 +61,11 @@ export class CreateUserDto {
     description: 'ชุด id ของ roles',
     example: [1, 2],
   })
-  @Transform(({ value }) => Number(value))
+  @Transform(({ value }) =>
+    typeof value === 'string'
+      ? value.split(',').map(Number)
+      : (value as number[]),
+  )
   @IsArray()
   @ArrayMinSize(1)
   @IsInt({ each: true })

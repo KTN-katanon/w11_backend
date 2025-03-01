@@ -28,6 +28,10 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'uploads/products'),
       serveRoot: '/products-images',
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads/users'),
+      serveRoot: '/users-images',
+    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'mydb.sqlite',
