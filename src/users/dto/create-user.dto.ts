@@ -9,6 +9,7 @@ import {
   IsArray,
   ArrayMinSize,
   IsInt,
+  IsOptional,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -62,4 +63,13 @@ export class CreateUserDto {
   @ArrayMinSize(1)
   @IsInt({ each: true })
   roleIds: number[];
+
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    description: 'รูปภาพสินค้า',
+    required: false,
+  })
+  @IsOptional()
+  file?: string;
 }
