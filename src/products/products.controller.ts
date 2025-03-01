@@ -84,13 +84,10 @@ export class ProductsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    const existingProduct = await this.productsService.findOne(+id);
-    const imageUrl = file
-      ? '/products-images/' + file.filename
-      : existingProduct.imageUrl;
+    console.log(file);
     return this.productsService.update(+id, {
       ...updateProductDto,
-      imageUrl,
+      imageUrl: file ? '/products-images/' + file.filename : undefined,
     });
   }
 
