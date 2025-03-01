@@ -12,6 +12,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -50,6 +51,7 @@ export class CreateUserDto {
     minimum: 1,
     maximum: 120,
   })
+  @Transform(({ value }) => Number(value))
   @IsNumber()
   @Min(1)
   @Max(120)
@@ -59,6 +61,7 @@ export class CreateUserDto {
     description: 'ชุด id ของ roles',
     example: [1, 2],
   })
+  @Transform(({ value }) => Number(value))
   @IsArray()
   @ArrayMinSize(1)
   @IsInt({ each: true })
