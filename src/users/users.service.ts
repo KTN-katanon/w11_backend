@@ -16,7 +16,9 @@ export class UsersService {
     private readonly rolesRepository: Repository<Role>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto & { imageUrl: string },
+  ): Promise<User> {
     const errors = await validate(createUserDto);
     if (errors.length > 0) {
       throw new Error(`Validation failed: ${errors.toString()}`);
@@ -42,7 +44,14 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto & { imageUrl?: string },
+  ): Promise<User> {
+    if (!updateUserDto.imageUrl) {
+      delete updateUserDto.file;
+      delete updateUserDto.imageUrl;
+    }
     const user = await this.usersRepository.findOneOrFail({
       where: { id: id },
       relations: ['roles'],
