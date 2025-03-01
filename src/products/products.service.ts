@@ -10,7 +10,7 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productsRepository: Repository<Product>,
-  ) { }
+  ) {}
 
   async create(
     createProductDto: CreateProductDto & { imageUrl: string },
