@@ -48,23 +48,19 @@ export class UsersService {
     id: number,
     updateUserDto: UpdateUserDto & { imageUrl?: string },
   ): Promise<User> {
-    if (!updateUserDto.imageUrl) {
-      delete updateUserDto.file;
-      delete updateUserDto.imageUrl;
-    }
     const user = await this.usersRepository.findOneOrFail({
       where: { id: id },
       relations: ['roles'],
     });
-    user.roles = []; // Clear role เดิมทิ้ง
+    user.roles = [];
     await this.usersRepository.save(user);
+
     if (updateUserDto.roleIds) {
       user.roles = await this.rolesRepository.findBy({
         id: In(updateUserDto.roleIds),
       });
     }
     const updateUser = { ...user, ...updateUserDto };
-    // const updateUser = Object.assign(user, updateUserDto);
     return await this.usersRepository.save(updateUser);
   }
 

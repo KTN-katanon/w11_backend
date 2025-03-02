@@ -23,16 +23,16 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiOperation({ summary: 'สร้างผู้ใช้ใหม่' })
+  @ApiOperation({ summary: 'สร้าง user ใหม่' })
   @ApiConsumes('multipart/form-data')
-  @ApiBody({ description: 'ข้อมูลผู้ใช้', type: CreateUserDto })
+  @ApiBody({ type: CreateUserDto, description: 'ข้อมูล user' })
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/users',
         filename: (req, file, callback) => {
           console.log(file);
-          const uniqueFileName = uuidv4() + extname(file.originalname);
+          const uniqueFileName = Date.now() + extname(file.originalname);
           callback(null, uniqueFileName);
         },
       }),
@@ -79,18 +79,16 @@ export class UsersController {
       }),
     }),
   )
-  async update(
+  update(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    console.log(file);
     return this.usersService.update(+id, {
       ...updateUserDto,
       imageUrl: file ? '/users-images/' + file.filename : undefined,
     });
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

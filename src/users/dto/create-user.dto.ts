@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   IsEmail,
   IsNotEmpty,
@@ -7,7 +8,6 @@ import {
   Min,
   Max,
   IsArray,
-  ArrayMinSize,
   IsInt,
   IsOptional,
 } from 'class-validator';
@@ -58,16 +58,17 @@ export class CreateUserDto {
   age: number;
 
   @ApiProperty({
-    description: 'ชุด id ของ roles',
+    description: 'ชุด role ids',
     example: [1, 2],
   })
-  @Transform(({ value }) =>
-    typeof value === 'string'
-      ? value.split(',').map(Number)
-      : (value as number[]),
-  )
+  @Transform(({ value }) => {
+    if (Array.isArray(value)) {
+      return value.map((val) => parseInt(val, 10));
+    } else {
+      return [parseInt(value, 10)];
+    }
+  })
   @IsArray()
-  @ArrayMinSize(1)
   @IsInt({ each: true })
   roleIds: number[];
 
