@@ -24,7 +24,7 @@ export class User {
   password: string;
   // roles: ('admin' | 'user')[];
 
-  @Column({ default: '/products-images/unknown.jpg' })
+  @Column({ default: '/users-images/unknown.jpg' })
   imageUrl: string;
 
   @CreateDateColumn()
@@ -38,9 +38,11 @@ export class User {
 
   @Column()
   gender: 'male' | 'female';
+
+  @Column({ default: 18 }) // กำหนดค่า default เป็น 18
   age: number;
 
-  @ManyToMany(() => Role, (role) => role.users, { cascade: true })
+  @ManyToMany(() => Role, (role) => role.users, { cascade: true, eager: true })
   @JoinTable()
   roles: Role[];
 
